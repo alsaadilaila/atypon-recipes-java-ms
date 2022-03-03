@@ -1,0 +1,26 @@
+target/
+.classpath
+.project
+.settings
+*.swp
+test-output
+.idea
+*.iml
+.metadata
+.vscode
+*.ipr
+.DS_Store
+bin/
+**/*maven-eclipse.xml
+**/*externalToolBuilders
+**/node_modules
+**/dist
+*.log
+
+# solr
+**/resources/solr/**/conf/*.json
+**/resources/solr/**/data/*
+
+# yarn
+yarn-error.log
+/logs/
