@@ -3,25 +3,22 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.4</version>
+        <version>2.4.0</version>
     </parent>
-
     <groupId>org.atypon</groupId>
     <artifactId>atypon-recipes-java-ms</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
-
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.uri>${project.baseUri}</project.uri>
         <main.basedir>${project.basedir}</main.basedir>
         <logback-json.version>0.1.5</logback-json.version>
-        <swagger.version>2.9.2</swagger.version>
+        <swagger.version>3.0.0</swagger.version>
         <jackson.version>2.12.1</jackson.version>
         <spring.version>5.1.16.RELEASE</spring.version>
         <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
@@ -32,19 +29,14 @@
         <skipITs>true</skipITs>
         <maven.failsafe-plugin.version>3.0.0-M4</maven.failsafe-plugin.version>
         <maven.surefire-plugin.version>${maven.failsafe-plugin.version}</maven.surefire-plugin.version>
+        <kotlin.version>1.6.20-RC</kotlin.version>
     </properties>
-
     <build>
         <pluginManagement>
             <plugins>
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
-                    <configuration>
-                        <!--                        <profiles>${spring.profiles}</profiles>-->
-                        <!--                        <jvmArguments>${boot.jvm.args}</jvmArguments>-->
-                        <!--                        <agent>${project.spring-instrument-jar}</agent>-->
-                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -141,54 +133,18 @@
             </plugin>
         </plugins>
     </build>
-
-    <!--    <profiles>-->
-    <!--        <profile>-->
-    <!--            <id>jrebel</id>-->
-    <!--            <properties>-->
-    <!--                <boot.jvm.args>${boot.jvm.memory} ${debug.args} ${jrebel.agent.args}</boot.jvm.args>-->
-    <!--            </properties>-->
-    <!--        </profile>-->
-    <!--        <profile>-->
-    <!--            <id>integration-test</id>-->
-    <!--            <build>-->
-    <!--                <plugins>-->
-    <!--                    <plugin>-->
-    <!--                        <groupId>org.jacoco</groupId>-->
-    <!--                        <artifactId>jacoco-maven-plugin</artifactId>-->
-    <!--                        <version>${jacoco-maven-plugin.version}</version>-->
-    <!--                        <configuration>-->
-    <!--                            <destFile>${sonar.jacoco.reportPath}</destFile>-->
-    <!--                            <append>true</append>-->
-    <!--                        </configuration>-->
-    <!--                        <executions>-->
-    <!--                            <execution>-->
-    <!--                                <id>default-prepare-agent</id>-->
-    <!--                                <phase>prepare-package</phase>-->
-    <!--                                <goals>-->
-    <!--                                    <goal>prepare-agent</goal>-->
-    <!--                                </goals>-->
-    <!--                            </execution>-->
-    <!--                            <execution>-->
-    <!--                                <id>default-report</id>-->
-    <!--                                <phase>package</phase>-->
-    <!--                                <goals>-->
-    <!--                                    <goal>report</goal>-->
-    <!--                                </goals>-->
-    <!--                            </execution>-->
-    <!--                        </executions>-->
-    <!--                    </plugin>-->
-    <!--                </plugins>-->
-    <!--            </build>-->
-    <!--        </profile>-->
-    <!--    </profiles>-->
-
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.ww</groupId>
-                <artifactId>ww-broadleaf-core</artifactId>
-                <version>${project.version}</version>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.22</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-boot-starter</artifactId>
+                <version>${swagger.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.postgresql</groupId>
@@ -212,11 +168,11 @@
                 <scope>provided</scope>
                 <type>zip</type>
             </dependency>
-            <dependency>
-                <artifactId>spring-security-ldap</artifactId>
-                <groupId>org.springframework.security</groupId>
-                <version>5.1.11.RELEASE</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <artifactId>spring-security-ldap</artifactId>-->
+<!--                <groupId>org.springframework.security</groupId>-->
+<!--                <version>5.1.11.RELEASE</version>-->
+<!--            </dependency>-->
             <dependency>
                 <artifactId>esapi</artifactId>
                 <exclusions>
@@ -376,26 +332,11 @@
                 <version>3.0.0</version>
                 <scope>test</scope>
             </dependency>
-            <dependency>
-                <groupId>org.springframework.security.extensions</groupId>
-                <artifactId>spring-security-saml2-core</artifactId>
-                <version>1.0.3.RELEASE</version>
-            </dependency>
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger2</artifactId>
-                <version>${swagger.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger-ui</artifactId>
-                <version>${swagger.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.swagger</groupId>
-                <artifactId>swagger-annotations</artifactId>
-                <version>1.5.21</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.security.extensions</groupId>-->
+<!--                <artifactId>spring-security-saml2-core</artifactId>-->
+<!--                <version>1.0.3.RELEASE</version>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>

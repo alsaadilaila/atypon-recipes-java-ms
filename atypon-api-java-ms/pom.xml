@@ -8,13 +8,10 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
     <artifactId>atypon-api-java-ms</artifactId>
-
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-
         <debug.port>8002</debug.port>
         <main.basedir>${project.basedir}${file.separator}..</main.basedir>
         <jacoco.utReportFolder>${project.build.directory}/jacoco/test</jacoco.utReportFolder>
@@ -25,10 +22,8 @@
         <junit.itReportFolder>${project.build.testOutputDirectory}/integrationTest</junit.itReportFolder>
         <serenity.version>2.6.0</serenity.version>
     </properties>
-
     <name>Atypon recipes API</name>
     <description>API Module For Custom Atypon recipes</description>
-
     <build>
         <finalName>api</finalName>
         <plugins>
@@ -151,38 +146,17 @@
             </plugin>
         </plugins>
     </build>
-
-    <!--    <profiles>-->
-    <!--        <profile>-->
-    <!--            <id>catalog</id>-->
-    <!--            <properties>-->
-    <!--                <debug.port>8002</debug.port>-->
-    <!--                <spring.profiles>local,catalog</spring.profiles>-->
-    <!--            </properties>-->
-    <!--        </profile>-->
-    <!--        <profile>-->
-    <!--            <id>customer</id>-->
-    <!--            <properties>-->
-    <!--                <debug.port>8003</debug.port>-->
-    <!--                <spring.profiles>local,customer</spring.profiles>-->
-    <!--            </properties>-->
-    <!--        </profile>-->
-    <!--        <profile>-->
-    <!--            <id>order</id>-->
-    <!--            <properties>-->
-    <!--                <debug.port>8004</debug.port>-->
-    <!--                <spring.profiles>local,order</spring.profiles>-->
-    <!--            </properties>-->
-    <!--        </profile>-->
-    <!--        <profile>-->
-    <!--            <id>integration-test</id>-->
-    <!--            <properties>-->
-    <!--                <skipITs>false</skipITs>-->
-    <!--            </properties>-->
-    <!--        </profile>-->
-    <!--    </profiles>-->
-
     <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.22</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -387,14 +361,6 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
             <version>1.14.2</version>
@@ -409,12 +375,6 @@
             <artifactId>serenity-spring</artifactId>
             <version>2.6.0</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.ww.wcp</groupId>
-            <artifactId>security</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
