@@ -4,9 +4,8 @@ import lombok.Data;
 
 @Data
 public class Nutrient {
-
-    private String title;
+    private String name;
     private Double amount;
     private String unit;
-    private Double percentOfDailyNeeds;
+    private Nutrition nutrition;
 }

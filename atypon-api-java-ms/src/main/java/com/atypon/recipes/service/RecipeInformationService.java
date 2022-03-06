@@ -11,8 +11,8 @@ public class RecipeInformationService {
 
     private final SpoonacularServiceApiCalls apiCalls;
 
-    public RecipeInformation recipeInformationById(Long id) {
-        ResponseEntity<RecipeInformation> recipeInformation = apiCalls.searchRecipeInformation(id);
+    public RecipeInformation recipeInformationById(String id) {
+        ResponseEntity<RecipeInformation> recipeInformation = apiCalls.getRecipeInformation(id);
         return recipeInformation.getBody();
     }
 }

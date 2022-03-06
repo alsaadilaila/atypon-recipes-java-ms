@@ -12,6 +12,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Ingredients {
 
+    private List<String> ingred = new ArrayList<>();
+
     public Ingredients(String input) {
         String[] ingreds = input.split(",");
         for (String s : ingreds) {
@@ -19,9 +21,8 @@ public class Ingredients {
         }
     }
 
-    private List<String> ingred = new ArrayList<>();
-
     public String compose() {
         return String.join(",+", ingred);
     }
 }
+

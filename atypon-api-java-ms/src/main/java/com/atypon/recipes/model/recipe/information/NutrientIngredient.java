@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class NutrientIngredient {
-
+    private String id;
     private String name;
     private Double amount;
     private String unit;

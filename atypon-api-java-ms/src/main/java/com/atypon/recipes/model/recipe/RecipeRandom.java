@@ -8,6 +8,7 @@ import java.util.List;
 @Data
 public class RecipeRandom {
 
+    public Long originalId;
     private Long id;
     private String title;
     private Integer readyInMinutes;
@@ -42,6 +43,5 @@ public class RecipeRandom {
     private List<String> occasions;
     private String instructions;
     private List<AnalyzedInstructions> analyzedInstructions;
-    public Long originalId;
     private WinePairing winePairing;
 }

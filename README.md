@@ -1,27 +1,34 @@
 ## Atypon Recipes Spring Boot App
+
 This Maven project as a solid starter project for
 
 ## Environment Setup
+
 You will need to install the following to run the application locally:
+
 * Java 11+
 * Maven 3+
 * Docker tools
 * Optional: Postgres Admin
 
 ## Creating Docker Solr Image in Local
+
 Use [solr](https://github.com/bitnami/bitnami-docker-solr) repo to build docker image locally
 
 ## Running the applications
-This starter contains one runnable applications: `api`, and `admin`. You can run `api` as any other Spring
-Boot application (http://docs.spring.io/spring-boot/docs/current/reference/html/using-boot-running-your-application.html).
+
+This starter contains one runnable applications: `api`, and `admin`. You can run `api` as any other Spring Boot
+application (http://docs.spring.io/spring-boot/docs/current/reference/html/using-boot-running-your-application.html).
 Before you start `api`, you need to start the database and Solr.
 
 To install the required dependencies:
+
 ```
 > mvn clean install
 ```
 
 ### Running the database and Solr servers
+
 We use Docker containers to run the Postgres database and Solr servers. They are configured within
 the `docker-compose.yml` in the root project directory. View
 the [database versioning page on Confluence](https://confluence.tools.weightwatchers.com/display/PB/Database+Versioning+with+Liquibase)
@@ -43,7 +50,9 @@ To stop the containers:
 ```
 
 ### Running the `api` application
+
 The `api` application can be run as a Spring Boot app from the command line:
+
 ```
    > cd api
    > mvn spring-boot:run -Drun.arguments="--spring.profiles.active=local"
@@ -55,6 +64,7 @@ You can access the api Swagger docs from `https://localhost:8445/api/swagger-ui.
 ## Tests
 
 ### Unit
+
 The unit tests run automatically during the `mvn test` phase as part of the `mvn clean install` lifecycle. To run the
 tests without doing a full build, run:
 
@@ -145,9 +155,10 @@ vulnerabilities
 
 ## Github actions
 
-self-hosted runner on 
+self-hosted runner on
+
 - JDK 11 (available at `jdk11` location)
-and
+  and
 - Maven 3.6.3 (available at `/home/runner/apache-maven-3.6.3` location)
 
 to the github runner itself. Based on choice we can modify the environment variables like so in the github workflow

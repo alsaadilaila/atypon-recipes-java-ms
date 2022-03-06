@@ -29,7 +29,6 @@
         <skipITs>true</skipITs>
         <maven.failsafe-plugin.version>3.0.0-M4</maven.failsafe-plugin.version>
         <maven.surefire-plugin.version>${maven.failsafe-plugin.version}</maven.surefire-plugin.version>
-        <kotlin.version>1.6.20-RC</kotlin.version>
     </properties>
     <build>
         <pluginManagement>
@@ -168,11 +167,11 @@
                 <scope>provided</scope>
                 <type>zip</type>
             </dependency>
-<!--            <dependency>-->
-<!--                <artifactId>spring-security-ldap</artifactId>-->
-<!--                <groupId>org.springframework.security</groupId>-->
-<!--                <version>5.1.11.RELEASE</version>-->
-<!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <artifactId>spring-security-ldap</artifactId>-->
+            <!--                <groupId>org.springframework.security</groupId>-->
+            <!--                <version>5.1.11.RELEASE</version>-->
+            <!--            </dependency>-->
             <dependency>
                 <artifactId>esapi</artifactId>
                 <exclusions>
@@ -332,11 +331,11 @@
                 <version>3.0.0</version>
                 <scope>test</scope>
             </dependency>
-<!--            <dependency>-->
-<!--                <groupId>org.springframework.security.extensions</groupId>-->
-<!--                <artifactId>spring-security-saml2-core</artifactId>-->
-<!--                <version>1.0.3.RELEASE</version>-->
-<!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>org.springframework.security.extensions</groupId>-->
+            <!--                <artifactId>spring-security-saml2-core</artifactId>-->
+            <!--                <version>1.0.3.RELEASE</version>-->
+            <!--            </dependency>-->
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>

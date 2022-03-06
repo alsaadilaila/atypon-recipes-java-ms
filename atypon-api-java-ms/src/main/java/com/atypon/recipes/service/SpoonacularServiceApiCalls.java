@@ -1,73 +1,47 @@
 package com.atypon.recipes.service;
 
-import com.atypon.recipes.model.Ingredients;
 import com.atypon.recipes.model.RecipeResults;
-import com.atypon.recipes.model.RecipesWithDefinedIngredients;
-import com.atypon.recipes.model.recipe.RecipeRandomResponse;
+import com.atypon.recipes.model.recipe.information.IngredientInformation;
 import com.atypon.recipes.model.recipe.information.RecipeInformation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.List;
 
 @Slf4j
 @Service
 @AllArgsConstructor
 public class SpoonacularServiceApiCalls {
     private final static String SEARCH_URL = "https://api.spoonacular.com/recipes/search";
-    private final static String SEARCH_BY_INGREDIENTS_URL = "https://api.spoonacular.com/recipes/findByIngredients";
-    private final static String RANDOM_RECIPE_URL = "https://api.spoonacular.com/recipes/random?number=1";
     private final static String RECIPE_INFORMATION_URL = "https://api.spoonacular.com/recipes";
+    private final static String RECIPE_INGREDIENT_URL = "https://api.spoonacular.com/food/ingredients/";
 
     private final RestTemplate restTemplate;
     private final RecipeUrlCreator recipeUrlCreator;
 
-    public ResponseEntity<RecipeResults> searchRecipe(String recipe) {
-        log.info("Composed url: " + SEARCH_URL);
-        ResponseEntity<RecipeResults> resp = restTemplate.exchange(recipeUrlCreator.createURLWithKey(SEARCH_URL + recipeSearch(recipe)), HttpMethod.GET, null, RecipeResults.class);
-
-        log.info(": " + resp.getBody());
-        return resp;
-    }
-
     private String recipeSearch(String recipe) {
-        return "?query=" + recipe + "&number=10";
+        return "?query=" + recipe + "&number=1&includeNutrition=true";
     }
 
-    public ResponseEntity<List<RecipesWithDefinedIngredients>> searchRecipeWithIngredients(Ingredients ingredients) {
-        log.info("Composed url: " + SEARCH_BY_INGREDIENTS_URL);
-        ResponseEntity<List<RecipesWithDefinedIngredients>> resp = restTemplate.exchange(recipeUrlCreator.createURLWithKey(SEARCH_BY_INGREDIENTS_URL + searchRecipeWithIngredients(ingredients.compose())), HttpMethod.GET, null, new ParameterizedTypeReference<>() {
-        });
-        log.info(": " + resp.getBody());
-        return resp;
+    public ResponseEntity<RecipeResults> searchRecipe(String recipe) {
+        String urlWithKey = recipeUrlCreator.createURLWithKey(SEARCH_URL + recipeSearch(recipe));
+        return restTemplate.exchange(urlWithKey, HttpMethod.GET, null, RecipeResults.class);
     }
 
-    private String searchRecipeWithIngredients(String ingredients) {
-        return "?ingredients=" + ingredients + "&number=10";
+    public ResponseEntity<RecipeInformation> getRecipeInformation(String id) {
+        String urlWithKey = recipeUrlCreator.createURLWithKey(RECIPE_INFORMATION_URL + informationUrl(id) + "includeNutrition=true");
+        return restTemplate.exchange(urlWithKey, HttpMethod.GET, null, RecipeInformation.class);
     }
 
-    public ResponseEntity<RecipeRandomResponse> randomRecipe() {
-        log.info("Composed url: " + RANDOM_RECIPE_URL);
-        ResponseEntity<RecipeRandomResponse> resp = restTemplate.exchange(recipeUrlCreator.createURLWithKey(RANDOM_RECIPE_URL), HttpMethod.GET, null, RecipeRandomResponse.class);
-        log.info(": " + resp.getBody());
-        return resp;
+    public ResponseEntity<IngredientInformation> getIngredientInformation(String id, Double amount) {
+        System.out.println("id=" + id);
+        String urlWithKey = recipeUrlCreator.createURLWithKey(RECIPE_INGREDIENT_URL + informationUrl(id) + "amount=" + amount);
+        return restTemplate.exchange(urlWithKey, HttpMethod.GET, null, IngredientInformation.class);
     }
 
-    public ResponseEntity<RecipeInformation> searchRecipeInformation(Long id) {
-        log.info("Composed url: " + RECIPE_INFORMATION_URL);
-        ResponseEntity<RecipeInformation> resp = restTemplate.exchange(recipeUrlCreator.createURLWithKey(RECIPE_INFORMATION_URL + recipeInformation(id)), HttpMethod.GET, null, RecipeInformation.class);
-
-        log.info(": " + resp.getBody());
-        return resp;
-    }
-
-    private String recipeInformation(Long id) {
+    private String informationUrl(String id) {
         return "/" + id + "/information?";
     }
 }
-
