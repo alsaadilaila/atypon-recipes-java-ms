@@ -1,0 +1,13 @@
+<configuration>
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    <root level="ERROR">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+    <logger name="org.springframework.transaction.support.TransactionSynchronizationUtils" level="OFF"/>
+    <logger name="org.broadleafcommerce.common.util.StreamingTransactionCapableUtil" level="OFF"/>
+    <logger name="com.broadleafcommerce.jobsevents.service.AbandonedProcessWorkerImpl" level="OFF"/>
+    <logger name="org.springframework" level="OFF"/>
+</configuration>
