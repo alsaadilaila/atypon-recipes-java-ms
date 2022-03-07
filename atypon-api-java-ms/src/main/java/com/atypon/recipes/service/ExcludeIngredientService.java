@@ -1,56 +1,75 @@
 package com.atypon.recipes.service;
 
-import com.atypon.recipes.model.Ingredients;
+import com.atypon.recipes.exception.IngredientNotFoundException;
+import com.atypon.recipes.exception.RecipeNotFoundException;
+import com.atypon.recipes.filter.SearchRecipesFilters;
 import com.atypon.recipes.model.Recipe;
+import com.atypon.recipes.model.RecipeInformation;
 import com.atypon.recipes.model.RecipeResults;
-import com.atypon.recipes.model.recipe.information.IngredientInformation;
-import com.atypon.recipes.model.recipe.information.NutrientIngredient;
-import com.atypon.recipes.model.recipe.information.RecipeInformation;
+import com.atypon.recipes.model.info.IngredientInformation;
+import com.atypon.recipes.model.info.Ingredients;
+import com.atypon.recipes.model.info.Nutrient;
+import com.atypon.recipes.model.info.NutrientIngredient;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import static java.util.Objects.isNull;
 
 @Service
 @AllArgsConstructor
+@NoArgsConstructor
 public class ExcludeIngredientService {
 
-    private final SpoonacularServiceApiCalls apiCalls;
+    public static final Predicate<Nutrient> nutrientPredicate = n -> "Calories".equals(n.getName());
 
-    public Double excludeIngredient(String recipe, Ingredients ingredientsToExclude) {
-        Double totalCalories = 0.0;
-        ResponseEntity<RecipeResults> searchedRecipe = apiCalls.searchRecipe(recipe);
+    @Autowired
+    private SpoonacularServiceApiCalls apiCalls;
+
+    private RecipeInformation getRecipe(String title) {
+        SearchRecipesFilters filters = SearchRecipesFilters.builder().titleMatch(title).build();
+        ResponseEntity<RecipeResults> searchedRecipe = apiCalls.searchRecipe("", filters, 1);
         if (!isNull(searchedRecipe) && !isNull(searchedRecipe.getBody()) && !searchedRecipe.getBody().getResults().isEmpty()) {
             Recipe result = searchedRecipe.getBody().getResults().get(0);
-            ResponseEntity<RecipeInformation> info = apiCalls.getRecipeInformation(result.getId());
-            RecipeInformation body = info.getBody();
-            if (!isNull(body) && !isNull(body.getNutrition()) && !isNull(body.getNutrition().getNutrients())) {
-                Optional<NutrientIngredient> nutrient = body.getNutrition().getNutrients().stream().filter(n -> "Calories".equals(n.getName())).findFirst();
-                if (nutrient.isPresent()) {
-                    NutrientIngredient nutr = nutrient.get();
-                    totalCalories = nutr.getAmount();
-                    System.out.println("R:" + result.getTitle() + "-" + result.getId() + "-" + totalCalories);
-                    for (String ingredient : ingredientsToExclude.getIngred()) {
-                        Optional<NutrientIngredient> full = body.getNutrition().getIngredients().stream().filter(n -> n.getName().equals(ingredient)).findFirst();
-                        if (full.isPresent()) {
-                            ResponseEntity<IngredientInformation> ingredientInformation = apiCalls.getIngredientInformation(full.get().getId(), full.get().getAmount());
-                            IngredientInformation ingredientInformationBody = ingredientInformation.getBody();
-                            if (!isNull(ingredientInformationBody)) {
-                                Optional<NutrientIngredient> optionalNutrientIngredient = ingredientInformationBody.getNutrition().getNutrients().stream().filter(n -> "Calories".equals(n.getName())).findFirst();
-                                if (optionalNutrientIngredient.isPresent()) {
-                                    Double amount = optionalNutrientIngredient.get().getAmount();
-                                    System.out.println("INGRED:" + optionalNutrientIngredient.get().getName() + "-ID:" + optionalNutrientIngredient.get().getId() + "-C:" + optionalNutrientIngredient.get().getAmount());
-                                    totalCalories -= amount;
-                                }
-                            }
-                        }
-                    }
-                }
+            ResponseEntity<RecipeInformation> info = apiCalls.getRecipeInformationById(result.getId());
+            return info.getBody();
+        } else {
+            throw new RecipeNotFoundException();
+        }
+    }
+
+    public Double excludeIngredient(String title, Ingredients ingredientsToExclude) {
+        Double recipeTotalCalories = 0.0;
+        RecipeInformation recipeInformation = getRecipe(title);
+        Optional<Nutrient> nutrientOptional = recipeInformation.getNutrition().getNutrients().stream().filter(nutrientPredicate).findFirst();
+        if (nutrientOptional.isPresent()) {
+            recipeTotalCalories = recipeInformation.getTotalCalories();
+            for (String ingredient : ingredientsToExclude.getIngredients()) {
+                Double amount = excludeIngredient(recipeInformation, ingredient);
+                recipeTotalCalories -= amount;
             }
         }
-        return totalCalories;
+        return recipeTotalCalories;
+    }
+
+    private Double excludeIngredient(RecipeInformation recipeInformation, String ingredient) {
+        Predicate<NutrientIngredient> nutrientIngredientPredicate = n -> n.getName().equals(ingredient);
+        Optional<NutrientIngredient> optional = recipeInformation.getNutrition().getIngredients().stream().filter(nutrientIngredientPredicate).findFirst();
+        if (optional.isPresent()) {
+            NutrientIngredient nutrientIngredient = optional.get();
+            ResponseEntity<IngredientInformation> ingredientInformation = apiCalls.getIngredientInformation(nutrientIngredient.getId(), nutrientIngredient.getAmount());
+            return getExcludedAmount(ingredientInformation);
+        } else {
+            throw new IngredientNotFoundException("Ingredient to exclude not found in the current recipe");
+        }
+    }
+
+    private Double getExcludedAmount(ResponseEntity<IngredientInformation> ingredientInformation) {
+        return ingredientInformation.getBody().getTotalCalories();
     }
 }

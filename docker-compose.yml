@@ -4,39 +4,39 @@ services:
     image: bitnami/solr
     ports:
       - "9002:8983"
-  db-master:
-    image: docker.io/bitnami/postgresql:12-debian-10
-    environment:
-      - POSTGRESQL_REPLICATION_MODE=master
-      - POSTGRESQL_REPLICATION_USER=postgres_repl
-      - POSTGRESQL_REPLICATION_PASSWORD=postgres
-      - POSTGRESQL_USERNAME=postgres
-      - POSTGRESQL_PASSWORD=
-      - ALLOW_EMPTY_PASSWORD=yes
-      - POSTGRESQL_ENABLE_TLS=yes
-      - POSTGRESQL_TLS_CERT_FILE=/opt/bitnami/postgresql/certs/server.crt
-      - POSTGRESQL_TLS_KEY_FILE=/opt/bitnami/postgresql/certs/server.key
-    ports:
-      - "9001:5432"
-  db-slave:
-    image: docker.io/bitnami/postgresql:12-debian-10
-    ports:
-      - "9003:5432"
-    depends_on:
-      - db-master
-    environment:
-      - POSTGRESQL_REPLICATION_MODE=slave
-      - POSTGRESQL_MASTER_HOST=db-master
-      - POSTGRESQL_MASTER_PORT_NUMBER=5432
-      - POSTGRESQL_REPLICATION_USER=postgres_repl
-      - POSTGRESQL_REPLICATION_PASSWORD=postgres
-      - POSTGRESQL_PASSWORD=
-      - ALLOW_EMPTY_PASSWORD=yes
-      - POSTGRESQL_ENABLE_TLS=yes
-      - POSTGRESQL_TLS_CERT_FILE=/opt/bitnami/postgresql/certs/server.crt
-      - POSTGRESQL_TLS_KEY_FILE=/opt/bitnami/postgresql/certs/server.key
-    volumes:
-      - ./docker/postgres_init/ca:/opt/bitnami/postgresql/certs
+  #  db-master:
+  #    image: docker.io/bitnami/postgresql:12-debian-10
+  #    environment:
+  #      - POSTGRESQL_REPLICATION_MODE=master
+  #      - POSTGRESQL_REPLICATION_USER=postgres_repl
+  #      - POSTGRESQL_REPLICATION_PASSWORD=postgres
+  #      - POSTGRESQL_USERNAME=postgres
+  #      - POSTGRESQL_PASSWORD=
+  #      - ALLOW_EMPTY_PASSWORD=yes
+  #      - POSTGRESQL_ENABLE_TLS=yes
+  #      - POSTGRESQL_TLS_CERT_FILE=/opt/bitnami/postgresql/certs/server.crt
+  #      - POSTGRESQL_TLS_KEY_FILE=/opt/bitnami/postgresql/certs/server.key
+  #    ports:
+  #      - "9001:5432"
+  #  db-slave:
+  #    image: docker.io/bitnami/postgresql:12-debian-10
+  #    ports:
+  #      - "9003:5432"
+  #    depends_on:
+  #      - db-master
+  #    environment:
+  #      - POSTGRESQL_REPLICATION_MODE=slave
+  #      - POSTGRESQL_MASTER_HOST=db-master
+  #      - POSTGRESQL_MASTER_PORT_NUMBER=5432
+  #      - POSTGRESQL_REPLICATION_USER=postgres_repl
+  #      - POSTGRESQL_REPLICATION_PASSWORD=postgres
+  #      - POSTGRESQL_PASSWORD=
+  #      - ALLOW_EMPTY_PASSWORD=yes
+  #      - POSTGRESQL_ENABLE_TLS=yes
+  #      - POSTGRESQL_TLS_CERT_FILE=/opt/bitnami/postgresql/certs/server.crt
+  #      - POSTGRESQL_TLS_KEY_FILE=/opt/bitnami/postgresql/certs/server.key
+  #    volumes:
+  #      - ./docker/postgres_init/ca:/opt/bitnami/postgresql/certs
   localstack:
     image: "localstack/localstack"
     environment:

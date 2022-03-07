@@ -1,4 +1,4 @@
-package com.atypon.recipes.model.recipe.information;
+package com.atypon.recipes.model.info;
 
 import lombok.Data;
 
@@ -8,5 +8,5 @@ import java.util.List;
 public class Ingredient {
     private Long id;
     private String name;
-    private List<NutrientIngredient> nutrition;
+    private List<Nutrient> nutrition;
 }

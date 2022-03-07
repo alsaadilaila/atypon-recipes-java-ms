@@ -1,4 +1,4 @@
-package com.atypon.recipes.service;
+package com.atypon.recipes.util;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

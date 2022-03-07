@@ -24,8 +24,6 @@
         <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
         <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.5</jacoco-maven-plugin.version>
-        <project.spring-instrument-jar>target/agents/spring-instrument.jar</project.spring-instrument-jar>
-        <argLine>-javaagent:${project.spring-instrument-jar} -Duser.timezone=UTC --illegal-access=permit</argLine>
         <skipITs>true</skipITs>
         <maven.failsafe-plugin.version>3.0.0-M4</maven.failsafe-plugin.version>
         <maven.surefire-plugin.version>${maven.failsafe-plugin.version}</maven.surefire-plugin.version>
@@ -33,10 +31,6 @@
     <build>
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-dependency-plugin</artifactId>
@@ -167,11 +161,6 @@
                 <scope>provided</scope>
                 <type>zip</type>
             </dependency>
-            <!--            <dependency>-->
-            <!--                <artifactId>spring-security-ldap</artifactId>-->
-            <!--                <groupId>org.springframework.security</groupId>-->
-            <!--                <version>5.1.11.RELEASE</version>-->
-            <!--            </dependency>-->
             <dependency>
                 <artifactId>esapi</artifactId>
                 <exclusions>
@@ -331,11 +320,6 @@
                 <version>3.0.0</version>
                 <scope>test</scope>
             </dependency>
-            <!--            <dependency>-->
-            <!--                <groupId>org.springframework.security.extensions</groupId>-->
-            <!--                <artifactId>spring-security-saml2-core</artifactId>-->
-            <!--                <version>1.0.3.RELEASE</version>-->
-            <!--            </dependency>-->
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
